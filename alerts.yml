@@ -1,0 +1,21 @@
+groups:
+  - name: container_alerts
+    rules:
+      - alert: HighNetworkInbound
+        expr: rate(container_network_receive_bytes_total[1m]) > 2000000
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High network inbound detected"
+          description: "Container {{ $labels.name }} is receiving unusually high traffic."
+
+      - alert: HighCPUUsage
+        expr: rate(container_cpu_usage_seconds_total[1m]) > 0.8
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High CPU usage detected"
+          description: "Possible resource abuse or mining attack."
+
