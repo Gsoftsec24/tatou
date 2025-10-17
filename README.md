@@ -27,6 +27,7 @@ python3 -m venv .venv
 
 # Install the necessary dependencies
 python -m pip install -e ".[dev]"
+pip install pgpy
 
 
 # Run the unit tests
