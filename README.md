@@ -54,6 +54,8 @@ docker compose logs -f
 http -v :5000/healthz
 
 # Open your browser at 127.0.0.1:5000 to check if the website is up.
+
+Private Key placement (in root directory): Add you private key for RMAP authentication in /keys/server_priv.asc
 ```
 
 Private Key placement (in root directory)
