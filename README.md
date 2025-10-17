@@ -28,8 +28,9 @@ python3 -m venv .venv
 # Install the necessary dependencies
 python -m pip install -e ".[dev]"
 
+
 # Run the unit tests
-PYTHONPATH = ./src pytest -vv
+PYTHONPATH=./src pytest -vv
 ```
 
 ### Deploy
