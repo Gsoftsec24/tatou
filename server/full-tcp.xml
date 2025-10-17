@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE nmaprun>
 <?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
-<!-- Nmap 7.93 scan initiated Fri Oct 17 18:07:38 2025 as: nmap -p- -sS -sV -O -T4 -oA full-tcp 10.11.12.14 -->
-<nmaprun scanner="nmap" args="nmap -p- -sS -sV -O -T4 -oA full-tcp 10.11.12.14" start="1760717258" startstr="Fri Oct 17 18:07:38 2025" version="7.93" xmloutputversion="1.05">
+<!-- Nmap 7.93 scan initiated Fri Oct 17 19:58:46 2025 as: nmap -p- -sS -sV -O -T4 -oA full-tcp 10.11.12.13 -->
+<nmaprun scanner="nmap" args="nmap -p- -sS -sV -O -T4 -oA full-tcp 10.11.12.13" start="1760723926" startstr="Fri Oct 17 19:58:46 2025" version="7.93" xmloutputversion="1.05">
 <scaninfo type="syn" protocol="tcp" numservices="65535" services="1-65535"/>
 <verbose level="0"/>
 <debugging level="0"/>
 <hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
-<address addr="10.11.12.14" addrtype="ipv4"/>
-<address addr="00:50:56:80:47:EE" addrtype="mac" vendor="VMware"/>
+<address addr="10.11.12.13" addrtype="ipv4"/>
+<address addr="00:50:56:80:89:61" addrtype="mac" vendor="VMware"/>
 <hostnames>
 </hostnames>
 </hosthint>
-<host starttime="1760717258" endtime="1760717353"><status state="up" reason="arp-response" reason_ttl="0"/>
-<address addr="10.11.12.14" addrtype="ipv4"/>
-<address addr="00:50:56:80:47:EE" addrtype="mac" vendor="VMware"/>
-<hostnames>
-</hostnames>
-<ports><extraports state="closed" count="65531">
-<extrareasons reason="reset" count="65531" proto="tcp" ports="1-21,23-79,81-3306,3308-4999,5001-65535"/>
-</extraports>
-<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="ssh" product="OpenSSH" version="9.2p1 Debian 2+deb12u7" extrainfo="protocol 2.0" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:openbsd:openssh:9.2p1</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
-<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="http" product="nginx" version="1.22.1" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.22.1</cpe></service></port>
-<port protocol="tcp" portid="3307"><state state="open" reason="syn-ack" reason_ttl="63"/><service name="mysql" product="MySQL" version="8.0.43" method="probed" conf="10"><cpe>cpe:/a:mysql:mysql:8.0.43</cpe></service></port>
-<port protocol="tcp" portid="5000"><state state="open" reason="syn-ack" reason_ttl="63"/><service name="upnp" servicefp="SF-Port5000-TCP:V=7.93%I=7%D=10/17%Time=68F269D1%P=x86_64-pc-linux-gnu%r(GetRequest,D2B,&quot;HTTP/1\.1\x20200\x20OK\r\nServer:\x20Werkzeug/2\.3\.6\x20Python/3\.11\.14\r\nDate:\x20Fri,\x2017\x20Oct\x202025\x2016:07:45\x20GMT\r\nContent-Type:\x20text/html;\x20charset=utf-8\r\nContent-Length:\x203195\r\nConnection:\x20close\r\n\r\n&lt;!doctype\x20html&gt;\n&lt;html\x20lang=\&quot;en\&quot;&gt;\n&lt;head&gt;\n\x20\x20&lt;meta\x20charset=\&quot;utf-8\&quot;\x20/&gt;\n\x20\x20&lt;meta\x20name=\&quot;viewport\&quot;\x20content=\&quot;width=device-width,\x20initial-scale=1\&quot;\x20/&gt;\n\x20\x20&lt;title&gt;Tatou\x20\xe2\x80\xa2\x20Watermark\x20&amp;\x20Share\x20PDFs&lt;/title&gt;\n\x20\x20&lt;meta\x20name=\&quot;description\&quot;\x20content=\&quot;Upload\x20PDFs,\x20create\x20watermarked\x20versions,\x20and\x20share\x20secure\x20public\x20links\.\&quot;\x20/&gt;\n\x20\x20&lt;link\x20rel=\&quot;stylesheet\&quot;\x20href=\&quot;/static/app\.css\&quot;&gt;\n&lt;/head&gt;\n&lt;body&gt;\n\x20\x20&lt;header&gt;\n\x20\x20\x20\x20&lt;div\x20class=\&quot;container\x20nav\&quot;&gt;\n\x20\x20\x20\x20\x20\x20&lt;a\x20href=\&quot;#\&quot;\x20class=\&quot;brand\&quot;\x20aria-label=\&quot;Tatou\x20Home\&quot;&gt;\n\x20\x20\x20\x20\x20\x20\x20\x20&lt;span\x20class=\&quot;brand__dot\&quot;\x20aria-hidden=\&quot;true\&quot;&gt;&lt;/span&gt;\n\x20\x20\x20\x20\x20\x20\x20\x20&lt;span&gt;Tatou&lt;/span&gt;\n\x20\x20\x20\x20\x20\x20&lt;/a&gt;\n\x20\x20\x20\x20\x20\x20&lt;nav\x20class=\&quot;nav__links\&quot;\x20aria-label=\&quot;Primary\&quot;&gt;\n\x20\x20\x20\x20\x20\x20\x20\x20&lt;a\x20class=\&quot;btn\&quot;\x20href=\&quot;login\&quot;&gt;Log\x20in&lt;/a&gt;\n\x20\x20\x20\x20\x20\x20\x20\x20&lt;a\x20class=\&quot;btn\x20btn-&#45;primary\&quot;\x20href=\&quot;signup\&quot;&gt;Sign\x20up&lt;/a&quot;)%r(RTSPRequest,16C,&quot;&lt;!DOCTYPE\x20HTML&gt;\n&lt;html\x20lang=\&quot;en\&quot;&gt;\n\x20\x20\x20\x20&lt;head&gt;\n\x20\x20\x20\x20\x20\x20\x20\x20&lt;meta\x20charset=\&quot;utf-8\&quot;&gt;\n\x20\x20\x20\x20\x20\x20\x20\x20&lt;title&gt;Error\x20response&lt;/title&gt;\n\x20\x20\x20\x20&lt;/head&gt;\n\x20\x20\x20\x20&lt;body&gt;\n\x20\x20\x20\x20\x20\x20\x20\x20&lt;h1&gt;Error\x20response&lt;/h1&gt;\n\x20\x20\x20\x20\x20\x20\x20\x20&lt;p&gt;Error\x20code:\x20400&lt;/p&gt;\n\x20\x20\x20\x20\x20\x20\x20\x20&lt;p&gt;Message:\x20Bad\x20request\x20version\x20\(&apos;RTSP/1\.0&apos;\)\.&lt;/p&gt;\n\x20\x20\x20\x20\x20\x20\x20\x20&lt;p&gt;Error\x20code\x20explanation:\x20400\x20-\x20Bad\x20request\x20syntax\x20or\x20unsupported\x20method\.&lt;/p&gt;\n\x20\x20\x20\x20&lt;/body&gt;\n&lt;/html&gt;\n&quot;);" method="table" conf="3"/></port>
-</ports>
-<os><portused state="open" proto="tcp" portid="22"/>
-<portused state="closed" proto="tcp" portid="1"/>
-<portused state="closed" proto="udp" portid="35201"/>
-<osmatch name="Linux 4.15 - 5.6" accuracy="100" line="67238">
-<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="4.X" accuracy="100"><cpe>cpe:/o:linux:linux_kernel:4</cpe></osclass>
-<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="5.X" accuracy="100"><cpe>cpe:/o:linux:linux_kernel:5</cpe></osclass>
-</osmatch>
-</os>
-<uptime seconds="2181463" lastboot="Mon Sep 22 12:11:30 2025"/>
-<distance value="1"/>
-<tcpsequence index="261" difficulty="Good luck!" values="9112C600,6549C2D5,5354DEEF,E6977446,21B23ED7,12A85C29"/>
-<ipidsequence class="All zeros" values="0,0,0,0,0,0"/>
-<tcptssequence class="1000HZ" values="820672B4,82067318,8206737C,820673E0,82067444,820674A8"/>
-<times srtt="268" rttvar="50" to="100000"/>
-</host>
-<runstats><finished time="1760717353" timestr="Fri Oct 17 18:09:13 2025" summary="Nmap done at Fri Oct 17 18:09:13 2025; 1 IP address (1 host up) scanned in 95.33 seconds" elapsed="95.33" exit="success"/><hosts up="1" down="0" total="1"/>
-</runstats>
-</nmaprun>
+<taskprogress task="SYN Stealth Scan" time="1760723977" percent="3.75" remaining="1283" etc="1760725259"/>
+<taskprogress task="SYN Stealth Scan" time="1760724292" percent="27.77" remaining="950" etc="1760725241"/>
+<taskprogress task="SYN Stealth Scan" time="1760724294" percent="27.90" remaining="949" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724295" percent="27.97" remaining="948" etc="1760725243"/>
+<taskprogress task="SYN Stealth Scan" time="1760724295" percent="27.99" remaining="947" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724296" percent="28.03" remaining="948" etc="1760725243"/>
+<taskprogress task="SYN Stealth Scan" time="1760724296" percent="28.04" remaining="948" etc="1760725243"/>
+<taskprogress task="SYN Stealth Scan" time="1760724296" percent="28.05" remaining="947" etc="1760725243"/>
+<taskprogress task="SYN Stealth Scan" time="1760724296" percent="28.05" remaining="947" etc="1760725243"/>
+<taskprogress task="SYN Stealth Scan" time="1760724296" percent="28.05" remaining="947" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724296" percent="28.06" remaining="946" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724296" percent="28.07" remaining="946" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724296" percent="28.07" remaining="946" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724296" percent="28.08" remaining="946" etc="1760725241"/>
+<taskprogress task="SYN Stealth Scan" time="1760724296" percent="28.08" remaining="945" etc="1760725241"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.09" remaining="948" etc="1760725244"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.09" remaining="948" etc="1760725244"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.10" remaining="947" etc="1760725244"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.11" remaining="947" etc="1760725243"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.11" remaining="947" etc="1760725243"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.12" remaining="946" etc="1760725243"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.12" remaining="946" etc="1760725243"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.13" remaining="946" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.13" remaining="946" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.14" remaining="945" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.14" remaining="945" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.15" remaining="945" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724297" percent="28.15" remaining="945" etc="1760725241"/>
+<taskprogress task="SYN Stealth Scan" time="1760724298" percent="28.18" remaining="946" etc="1760725243"/>
+<taskprogress task="SYN Stealth Scan" time="1760724298" percent="28.21" remaining="945" etc="1760725242"/>
+<taskprogress task="SYN Stealth Scan" time="1760724298" percent="28.23" remaining="944" etc="1760725241"/>
