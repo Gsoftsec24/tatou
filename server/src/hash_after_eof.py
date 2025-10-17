@@ -1,12 +1,11 @@
-"""add_after_eof.py
+"""hash_after_eof.py
 
-Toy watermarking method that appends an authenticated payload *after* the
+This watermarking method that appends an authenticated payload *after* the
 PDF's final EOF marker.
 
 This intentionally simple scheme demonstrates the required
 :class:`~watermarking_method.WatermarkingMethod` interface without
-modifying PDF object structures. Most PDF readers ignore trailing bytes
-beyond ``%%EOF``, so the original document remains renderable.
+modifying PDF object structures. Most PDF readers ignore trailing bytes beyond ``%%EOF``, so the original document remains renderable. It also check the orginal contents of the file have been changed or not.
 
 Security note
 -------------
@@ -26,6 +25,10 @@ import base64
 import hashlib
 import hmac
 import json
+import email
+import smtplib
+from email.message import EmailMessage
+import re
 
 from watermarking_method import (
     InvalidKeyError,
@@ -36,8 +39,8 @@ from watermarking_method import (
 )
 
 
-class AddAfterEOF(WatermarkingMethod):
-    """Toy method that appends a watermark record after the PDF EOF.
+class HashAfterEOF(WatermarkingMethod):
+    """This method that appends a watermark record after the PDF EOF.
 
     Format (all ASCII/UTF‑8):
 
@@ -54,7 +57,7 @@ class AddAfterEOF(WatermarkingMethod):
     using the caller-provided ``key`` (UTF‑8) and HMAC‑SHA256.
     """
 
-    name: Final[str] = "toy-eof"
+    name: Final[str] = "hash-eof"
 
     # Constants
     _MAGIC: Final[bytes] = b"\n%%WM-ADD-AFTER-EOF:v1\n"
@@ -85,8 +88,13 @@ class AddAfterEOF(WatermarkingMethod):
             raise ValueError("Secret must be a non-empty string")
         if not isinstance(key, str) or not key:
             raise ValueError("Key must be a non-empty string")
+        if not self.is_email(secret):
+            raise ValueError("Invalid secret")
 
-        payload = self._build_payload(secret, key)
+        file_hash = hashlib.sha256(data).hexdigest()
+        #print("file hash :",file_hash)
+
+        payload = self._build_payload(secret, key, file_hash)
 
         # Append after the last EOF marker; if none is found (rare in
         # malformed PDFs), we still append at the end, since most parsers
@@ -154,15 +162,25 @@ class AddAfterEOF(WatermarkingMethod):
 
         return secret_bytes.decode("utf-8")
 
-    # ---------------------
-    # Internal helpers (updated or BUG 1 and 2 to fix validation for empty secret or key)
+    def is_email(self,s: str) -> bool:
+        # sample regex for email validation
+        pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        return re.match(pattern,s) is not None
+
+    # Internal helpers
     # ---------------------
 
-    def _build_payload(self, secret: str, key: str) -> bytes:
-        if not secret or not key: 
-            raise ValueError("Secret and key must not be empty")
+    def _build_payload(self, secret: str, key: str, file_hash: str) -> bytes:
         """Build the base64url-encoded JSON payload to append."""
-        secret_bytes = secret.encode("utf-8")
+
+        #from watermarking_utils import store_recipient_credentials
+
+        final_secret = secret + file_hash
+        print("final secret :",final_secret)
+
+        #store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
         mac_hex = self._mac_hex(secret_bytes, key)
         obj = {
             "v": 1,
@@ -178,7 +196,7 @@ class AddAfterEOF(WatermarkingMethod):
         """Compute HMAC-SHA256 over the contextualized secret and return hex."""
         hm = hmac.new(key.encode("utf-8"), self._CONTEXT + secret_bytes, hashlib.sha256)
         return hm.hexdigest()
+    
 
-
-__all__ = ["AddAfterEOF"]
+__all__ = ["HashAfterEOF"]
 

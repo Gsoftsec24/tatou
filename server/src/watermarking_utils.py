@@ -12,6 +12,7 @@ This module exposes:
 - :func:`apply_watermark`: run a concrete watermarking method on a PDF.
 - :func:`read_watermark`: recover a secret using a concrete method.
 - :func:`register_method` / :func:`get_method`: registry helpers.
+- :func:`send_email_with_pdf` : send mail to the appropriate user with watermarked pdf
 
 Dependencies
 ------------
@@ -35,6 +36,9 @@ import io
 import json
 import os
 import re
+import email
+import smtplib
+from email.message import EmailMessage
 
 from watermarking_method import (
     PdfSource,
@@ -42,15 +46,18 @@ from watermarking_method import (
     load_pdf_bytes,
 )
 from add_after_eof import AddAfterEOF
-from unsafe_bash_bridge_append_eof import UnsafeBashBridgeAppendEOF
-
+from email_after_eof import EmailAfterEOF
+from hash_after_eof import HashAfterEOF
+#from email_in_producer import EmailInProducer
 # --------------------
 # Method registry
 # --------------------
 
 METHODS: Dict[str, WatermarkingMethod] = {
-    AddAfterEOF.name: AddAfterEOF(),
-    UnsafeBashBridgeAppendEOF.name: UnsafeBashBridgeAppendEOF()
+    AddAfterEOF.name: AddAfterEOF(),   
+    EmailAfterEOF.name: EmailAfterEOF(),
+    HashAfterEOF.name: HashAfterEOF()
+#    EmailInProducer.name: EmailInProducer()
 }
 """Registry of available watermarking methods.
 
@@ -239,6 +246,10 @@ def explore_pdf(pdf: PdfSource) -> Dict[str, Any]:
     root["children"] = children
     return root
 
+def store_recipient_credentials(email: str,recipient_secret: str,key: str | None = None):
+
+    with open("recipient.txt", "a") as file:
+        file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
 
 __all__ = [
     "METHODS",
@@ -248,5 +259,6 @@ __all__ = [
     "read_watermark",
     "explore_pdf",
     "is_watermarking_applicable"
+    #"send_email_with_pdf"
 ]
 

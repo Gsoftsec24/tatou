@@ -33,13 +33,16 @@ import json
 import os
 import sys
 import getpass
+import email
+import smtplib
+from email.message import EmailMessage
 
 from watermarking_method import (
     InvalidKeyError,
     SecretNotFoundError,
     WatermarkingError
 )
-from watermarking_utils import METHODS, apply_watermark, read_watermark, explore_pdf, is_watermarking_applicable
+from watermarking_utils import METHODS, apply_watermark, read_watermark, explore_pdf, is_watermarking_applicable, store_recipient_credentials
 
 __version__ = "0.1.0"
 
@@ -107,6 +110,7 @@ def cmd_explore(args: argparse.Namespace) -> int:
 def cmd_embed(args: argparse.Namespace) -> int:
     key = _resolve_key(args)
     secret = _resolve_secret(args)
+    print("key:",key)
     if not is_watermarking_applicable(method=args.method,pdf=args.input, position=args.position):
         print(f"Method {args.method} is not applicable on {args.output} at {args.position}.")
         return 5

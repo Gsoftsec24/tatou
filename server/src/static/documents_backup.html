@@ -148,11 +148,10 @@
       }
     }
 
-    const uploadForm = document.getElementById('uploadForm');
-    uploadForm.addEventListener('submit', async (e) => {
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       statusEl.textContent = 'Uploading…';
-      const fd = new FormData(uploadForm);
+      const fd = new FormData(e.currentTarget);
       try {
         const resp = await apiFetch('/api/upload-document', { method: 'POST', body: fd });
         if (!resp.ok) {
@@ -160,7 +159,7 @@
           throw new Error(err.message || resp.statusText);
         }
         statusEl.textContent = 'Uploaded successfully';
-        uploadForm.reset();
+        e.currentTarget.reset();
         await loadDocuments();
       } catch (err) {
         statusEl.textContent = 'Upload failed: ' + err.message;

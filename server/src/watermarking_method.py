@@ -109,8 +109,8 @@ def load_pdf_bytes(src: PdfSource) -> bytes:
             "Unsupported PdfSource; expected bytes, path, or binary IO"
         )
 
-    if not is_pdf_bytes(data):
-        raise ValueError("Input does not look like a valid PDF (missing %PDF header)")
+    if not data.strip().startswith(b"%PDF") or b"%%EOF" not in data:
+        raise ValueError("Input does not look like a valid PDF (missing %PDF header or %%EOF marker)")
     return data
 
 

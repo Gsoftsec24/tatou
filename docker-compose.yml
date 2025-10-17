@@ -9,6 +9,7 @@ services:
       - "5000:5000"
     volumes:
       - user-files:/app/storage
+      - ./storage:/app/storage
     environment:
       - PYTHONUNBUFFERED=1
       # DB connection details for future use by the API
@@ -17,10 +18,13 @@ services:
       - DB_NAME=tatou
       - DB_USER=${MARIADB_USER}
       - DB_PASSWORD=${MARIADB_PASSWORD}
+      - SERVER_KEY_PASSPHRASE=${SERVER_KEY_PASSPHRASE}
+      - STORAGE_DIR=/app/storage
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
+    
 
   db:
     image: mariadb:11.4

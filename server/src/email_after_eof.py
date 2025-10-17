@@ -1,6 +1,6 @@
-"""add_after_eof.py
+"""email_after_eof.py
 
-Toy watermarking method that appends an authenticated payload *after* the
+This watermarking method that appends an authenticated payload *after* the
 PDF's final EOF marker.
 
 This intentionally simple scheme demonstrates the required
@@ -26,6 +26,10 @@ import base64
 import hashlib
 import hmac
 import json
+import email
+import smtplib
+from email.message import EmailMessage
+import re
 
 from watermarking_method import (
     InvalidKeyError,
@@ -35,8 +39,9 @@ from watermarking_method import (
     load_pdf_bytes,
 )
 
+#from watermarking_utils import send_email_with_pdf
 
-class AddAfterEOF(WatermarkingMethod):
+class EmailAfterEOF(WatermarkingMethod):
     """Toy method that appends a watermark record after the PDF EOF.
 
     Format (all ASCII/UTF‑8):
@@ -54,7 +59,7 @@ class AddAfterEOF(WatermarkingMethod):
     using the caller-provided ``key`` (UTF‑8) and HMAC‑SHA256.
     """
 
-    name: Final[str] = "toy-eof"
+    name: Final[str] = "email-eof"
 
     # Constants
     _MAGIC: Final[bytes] = b"\n%%WM-ADD-AFTER-EOF:v1\n"
@@ -85,6 +90,8 @@ class AddAfterEOF(WatermarkingMethod):
             raise ValueError("Secret must be a non-empty string")
         if not isinstance(key, str) or not key:
             raise ValueError("Key must be a non-empty string")
+        if not self.is_email(secret):
+            raise ValueError("Invalid secret")
 
         payload = self._build_payload(secret, key)
 
@@ -154,15 +161,26 @@ class AddAfterEOF(WatermarkingMethod):
 
         return secret_bytes.decode("utf-8")
 
-    # ---------------------
-    # Internal helpers (updated or BUG 1 and 2 to fix validation for empty secret or key)
+    def is_email(self,s: str) -> bool:
+        # sample regex for email validation
+        pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        return re.match(pattern,s) is not None
+
+    # Internal helpers
     # ---------------------
 
     def _build_payload(self, secret: str, key: str) -> bytes:
-        if not secret or not key: 
-            raise ValueError("Secret and key must not be empty")
         """Build the base64url-encoded JSON payload to append."""
-        secret_bytes = secret.encode("utf-8")
+
+#        from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+        print("final secret :",final_secret)
+
+#        store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
         mac_hex = self._mac_hex(secret_bytes, key)
         obj = {
             "v": 1,
@@ -178,7 +196,24 @@ class AddAfterEOF(WatermarkingMethod):
         """Compute HMAC-SHA256 over the contextualized secret and return hex."""
         hm = hmac.new(key.encode("utf-8"), self._CONTEXT + secret_bytes, hashlib.sha256)
         return hm.hexdigest()
+    
+    def extract_email_parts(self, secret) -> str:
 
+        # Split email into local and domain
+        local, domain = secret.split("@", 1)
+        
+        # Take only the first part of the domain (before first dot)
+        domain_name = domain.split(".")[0]
+
+        # Extract first 2 characters of local part
+        first_two = local[:2]
+
+        # Extract last 2 characters of domain_name
+        last_two = domain_name[-2:]
+
+        # Concatenate
+        result = first_two + last_two
+        return result
 
 __all__ = ["AddAfterEOF"]
 
