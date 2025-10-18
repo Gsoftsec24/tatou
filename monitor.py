@@ -91,16 +91,19 @@ def check_log_health():
     """Ensure logging is working"""
     try:
         result = subprocess.run(
-            "ls -la /app/logs/security.log | awk '{print $5}'",
+            "ls -la /app/logs/security.log 2>/dev/null | awk '{print $5}'",
             shell=True, capture_output=True, text=True
         )
-        file_size = int(result.stdout.strip())
-        
+        output = result.stdout.strip()
+
+        if not output:
+            print("⚠️  LOGGING WARNING: Log file not found or inaccessible at /app/logs/security.log")
+            return
+
+        file_size = int(output)
+
         if file_size == 0:
             print("❌ LOGGING ERROR: Security log file is empty")
-            
+
     except Exception as e:
         print(f"Error checking log health: {e}")
-
-if __name__ == "__main__":
-    detailed_security_monitor()
