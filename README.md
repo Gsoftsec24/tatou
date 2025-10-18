@@ -29,6 +29,8 @@ python3 -m venv .venv
 python -m pip install -e ".[dev]"
 pip install pgpy
 pip install hypothesis
+pip install pytest pytest-cov hypothesis
+
 
 
 # Run the unit tests

@@ -7,6 +7,14 @@ from email_after_eof import EmailAfterEOF
 from hash_after_eof import HashAfterEOF
 from watermarking_method import SecretNotFoundError, InvalidKeyError, load_pdf_bytes
 
+# Import all relevant exceptions and utilities
+from watermarking_method import (
+    SecretNotFoundError,
+    InvalidKeyError,
+    WatermarkingError,
+    load_pdf_bytes,
+)
+
 # ------------------------
 # Helper: minimal fake PDF
 # ------------------------
@@ -859,6 +867,265 @@ def test_email_after_eof_build_payload_unicode_email(valid_key):
     payload = wm._build_payload("usér@dömäin.com", valid_key)
     assert isinstance(payload, bytes)
     assert len(payload) > 0
+    
+def test_hash_after_eof_invalid_email_rejected(sample_pdf_bytes, valid_key):
+    """Ensure invalid email secrets are rejected early."""
+    wm = HashAfterEOF()
+    invalid_emails = ["plainaddress", "user@domain", "@nope.com", "user@", "user@@domain.com"]
+    for bad in invalid_emails:
+        with pytest.raises(ValueError):
+            wm.add_watermark(sample_pdf_bytes, bad, valid_key)
+
+def test_hash_after_eof_malformed_payload_raises(valid_key):
+    """If payload JSON is corrupted, read_secret must raise SecretNotFoundError."""
+    wm = HashAfterEOF()
+    # Fake payload after EOF, corrupted base64 content
+    bad_pdf = b"%PDF-1.4\n%%EOF\n%%WM-ADD-AFTER-EOF:v1\n!!!invalid-base64!!!\n"
+    with pytest.raises(SecretNotFoundError):
+        wm.read_secret(bad_pdf, valid_key)
+        
+def test_hash_after_eof_wrong_algorithm_field_raises(sample_pdf_bytes, valid_secret, valid_key):
+    wm = HashAfterEOF()
+    pdf = wm.add_watermark(sample_pdf_bytes, valid_secret, valid_key)
+
+    # Decode, patch algorithm, re-encode
+    parts = pdf.split(b":v1\n")
+    payload = base64.urlsafe_b64decode(parts[-1].strip())
+    data = json.loads(payload)
+    data["alg"] = "FAKE-ALG"
+    tampered = base64.urlsafe_b64encode(json.dumps(data).encode())
+    modified = parts[0] + b":v1\n" + tampered + b"\n"
+
+    with pytest.raises(WatermarkingError):
+        wm.read_secret(modified, valid_key)
+
+def test_hash_after_eof_invalid_key_type_raises(sample_pdf_bytes, valid_secret):
+    wm = HashAfterEOF()
+    pdf = wm.add_watermark(sample_pdf_bytes, valid_secret, "key123")
+
+    for bad_key in [None, 12345, b"bytes", ""]:
+        with pytest.raises(ValueError):
+            wm.read_secret(pdf, bad_key)
+
+def test_hash_after_eof_mac_mismatch_triggers_invalid_key(sample_pdf_bytes, valid_secret, valid_key):
+    """Corrupt the MAC value to trigger InvalidKeyError."""
+    wm = HashAfterEOF()
+    pdf = wm.add_watermark(sample_pdf_bytes, valid_secret, valid_key)
+
+    # Decode Base64 payload, modify MAC value
+    parts = pdf.split(b":v1\n")
+    payload_json = base64.urlsafe_b64decode(parts[-1].strip())
+    data = json.loads(payload_json)
+
+    # Corrupt only the MAC string (e.g., flip last hex digit)
+    mac = data["mac"]
+    data["mac"] = mac[:-1] + ("0" if mac[-1] != "0" else "1")
+
+    # Re-encode and rebuild PDF
+    tampered_payload = base64.urlsafe_b64encode(json.dumps(data).encode())
+    tampered_pdf = parts[0] + b":v1\n" + tampered_payload + b"\n"
+
+    with pytest.raises(InvalidKeyError):
+        wm.read_secret(tampered_pdf, valid_key)
+
+
+def test_hash_after_eof_mac_hex_is_stable(valid_key):
+    wm = HashAfterEOF()
+    s = b"abc123"
+    mac1 = wm._mac_hex(s, valid_key)
+    mac2 = wm._mac_hex(s, valid_key)
+    assert mac1 == mac2
+    assert len(mac1) == 64  # SHA256 → 64 hex chars
+    
+def test_hash_after_eof_unsupported_version_raises(sample_pdf_bytes, valid_secret, valid_key):
+    wm = HashAfterEOF()
+    pdf = wm.add_watermark(sample_pdf_bytes, valid_secret, valid_key)
+
+    # Decode payload, modify version
+    parts = pdf.split(b":v1\n")
+    payload = base64.urlsafe_b64decode(parts[-1].strip())
+    data = json.loads(payload)
+    data["v"] = 99
+    tampered = base64.urlsafe_b64encode(json.dumps(data).encode())
+    modified = parts[0] + b":v1\n" + tampered + b"\n"
+
+    with pytest.raises(SecretNotFoundError):
+        wm.read_secret(modified, valid_key)
+        
+def test_email_after_eof_invalid_key_types(sample_pdf_bytes, valid_secret):
+    wm = EmailAfterEOF()
+    for bad_key in [None, 123, b"bytes", ""]:
+        with pytest.raises(ValueError):
+            wm.add_watermark(sample_pdf_bytes, valid_secret, bad_key)
+            
+def test_email_after_eof_various_invalid_emails(sample_pdf_bytes, valid_key):
+    wm = EmailAfterEOF()
+    invalids = ["plainaddress", "user@", "@domain.com", "user@domain", "user@@example.com", "user@.com"]
+    for bad in invalids:
+        with pytest.raises(ValueError):
+            wm.add_watermark(sample_pdf_bytes, bad, valid_key)
+            
+def test_email_after_eof_malformed_payload_raises(valid_key):
+    wm = EmailAfterEOF()
+    bad_pdf = b"%PDF-1.4\n%%EOF\n%%WM-ADD-AFTER-EOF:v1\nnot-base64!!!\n"
+    with pytest.raises(SecretNotFoundError):
+        wm.read_secret(bad_pdf, valid_key)
+        
+def test_email_after_eof_wrong_algorithm_field_raises(sample_pdf_bytes, valid_secret, valid_key):
+    wm = EmailAfterEOF()
+    pdf = wm.add_watermark(sample_pdf_bytes, valid_secret, valid_key)
+
+    # Decode payload, patch algorithm, re-encode
+    parts = pdf.split(b":v1\n")
+    payload = base64.urlsafe_b64decode(parts[-1].strip())
+    data = json.loads(payload)
+    data["alg"] = "FAKE-ALG"
+    tampered = base64.urlsafe_b64encode(json.dumps(data).encode())
+    modified = parts[0] + b":v1\n" + tampered + b"\n"
+
+    with pytest.raises(WatermarkingError):
+        wm.read_secret(modified, valid_key)
+        
+def test_email_after_eof_unsupported_version_field_raises(sample_pdf_bytes, valid_secret, valid_key):
+    wm = EmailAfterEOF()
+    pdf = wm.add_watermark(sample_pdf_bytes, valid_secret, valid_key)
+
+    parts = pdf.split(b":v1\n")
+    payload = base64.urlsafe_b64decode(parts[-1].strip())
+    data = json.loads(payload)
+    data["v"] = 99
+    tampered = base64.urlsafe_b64encode(json.dumps(data).encode())
+    modified = parts[0] + b":v1\n" + tampered + b"\n"
+
+    with pytest.raises(SecretNotFoundError):
+        wm.read_secret(modified, valid_key)
+        
+def test_email_after_eof_mac_mismatch_triggers_invalid_key(sample_pdf_bytes, valid_secret, valid_key):
+    wm = EmailAfterEOF()
+    pdf = wm.add_watermark(sample_pdf_bytes, valid_secret, valid_key)
+    # Decode Base64 payload, modify MAC value
+    parts = pdf.split(b":v1\n")
+    payload_json = base64.urlsafe_b64decode(parts[-1].strip())
+    data = json.loads(payload_json)
+    mac = data["mac"]
+    data["mac"] = mac[:-1] + ("0" if mac[-1] != "0" else "1")
+    tampered_payload = base64.urlsafe_b64encode(json.dumps(data).encode())
+    tampered_pdf = parts[0] + b":v1\n" + tampered_payload + b"\n"
+
+    with pytest.raises(InvalidKeyError):
+        wm.read_secret(tampered_pdf, valid_key)
+        
+def test_email_after_eof_mac_hex_is_stable(valid_key):
+    wm = EmailAfterEOF()
+    s = b"user@example.com"
+    mac1 = wm._mac_hex(s, valid_key)
+    mac2 = wm._mac_hex(s, valid_key)
+    assert mac1 == mac2
+    assert len(mac1) == 64
+        
+def test_email_after_eof_extract_email_parts_correctness():
+    wm = EmailAfterEOF()
+    result = wm.extract_email_parts("user@example.com")
+    # Expected: first 2 of 'user' + last 2 of 'example' = 'usle'
+    assert result == "usle"
+
+
+def test_email_after_eof_is_watermark_applicable_always_true(sample_pdf_bytes):
+    wm = EmailAfterEOF()
+    assert wm.is_watermark_applicable(sample_pdf_bytes) is True
+    
+    
+def test_add_after_eof_invalid_key_and_secret_types(sample_pdf_bytes):
+    wm = AddAfterEOF()
+    invalid_keys = [None, 123, b"bytes", ""]
+    for bad_key in invalid_keys:
+        with pytest.raises(ValueError):
+            wm.add_watermark(sample_pdf_bytes, "validsecret", bad_key)
+    with pytest.raises(ValueError):
+        wm.add_watermark(sample_pdf_bytes, "", "key123")
+
+def test_add_after_eof_handles_unicode_secret(sample_pdf_bytes, valid_key):
+    wm = AddAfterEOF()
+    secret = "üñîçødé_secret"
+    pdf = wm.add_watermark(sample_pdf_bytes, secret, valid_key)
+    assert b"%%WM-ADD-AFTER-EOF" in pdf
+    recovered = wm.read_secret(pdf, valid_key)
+    assert secret in recovered
+    
+def test_add_after_eof_malformed_payload_raises(valid_key):
+    wm = AddAfterEOF()
+    bad_pdf = b"%PDF-1.4\n%%EOF\n%%WM-ADD-AFTER-EOF:v1\n!!!bad-base64!!!\n"
+    with pytest.raises(SecretNotFoundError):
+        wm.read_secret(bad_pdf, valid_key)
+
+def test_add_after_eof_wrong_algorithm_field_raises(sample_pdf_bytes, valid_secret, valid_key):
+    wm = AddAfterEOF()
+    pdf = wm.add_watermark(sample_pdf_bytes, valid_secret, valid_key)
+    parts = pdf.split(b":v1\n")
+    payload = base64.urlsafe_b64decode(parts[-1].strip())
+    data = json.loads(payload)
+    data["alg"] = "FAKE-ALG"
+    tampered = base64.urlsafe_b64encode(json.dumps(data).encode())
+    modified = parts[0] + b":v1\n" + tampered + b"\n"
+    with pytest.raises(WatermarkingError):
+        wm.read_secret(modified, valid_key)
+      
+def test_add_after_eof_unsupported_version_raises(sample_pdf_bytes, valid_secret, valid_key):
+    wm = AddAfterEOF()
+    pdf = wm.add_watermark(sample_pdf_bytes, valid_secret, valid_key)
+    parts = pdf.split(b":v1\n")
+    payload = base64.urlsafe_b64decode(parts[-1].strip())
+    data = json.loads(payload)
+    data["v"] = 99
+    tampered = base64.urlsafe_b64encode(json.dumps(data).encode())
+    modified = parts[0] + b":v1\n" + tampered + b"\n"
+    with pytest.raises(SecretNotFoundError):
+        wm.read_secret(modified, valid_key)
+      
+def test_add_after_eof_mac_mismatch_triggers_invalid_key(sample_pdf_bytes, valid_secret, valid_key):
+    wm = AddAfterEOF()
+    pdf = wm.add_watermark(sample_pdf_bytes, valid_secret, valid_key)
+    parts = pdf.split(b":v1\n")
+    payload_json = base64.urlsafe_b64decode(parts[-1].strip())
+    data = json.loads(payload_json)
+    mac = data["mac"]
+    data["mac"] = mac[:-1] + ("0" if mac[-1] != "0" else "1")
+    tampered_payload = base64.urlsafe_b64encode(json.dumps(data).encode())
+    tampered_pdf = parts[0] + b":v1\n" + tampered_payload + b"\n"
+    with pytest.raises(InvalidKeyError):
+        wm.read_secret(tampered_pdf, valid_key)
+        
+        
+def test_add_after_eof_mac_hex_stability(valid_key):
+    wm = AddAfterEOF()
+    s = b"hello"
+    mac1 = wm._mac_hex(s, valid_key)
+    mac2 = wm._mac_hex(s, valid_key)
+    assert mac1 == mac2
+    assert len(mac1) == 64  # 256-bit digest → 64 hex chars
+            
+def test_add_after_eof_build_payload_deterministic_structure(valid_secret, valid_key):
+    wm = AddAfterEOF()
+    p1 = wm._build_payload(valid_secret, valid_key)
+    p2 = wm._build_payload(valid_secret, valid_key)
+    assert p1 == p2
+    decoded = base64.b64decode(p1)
+    data = json.loads(decoded)
+    assert "alg" in data and data["alg"] == "HMAC-SHA256"
+    assert "v" in data and data["v"] == 1
+    assert "secret" in data
+      
+def test_add_after_eof_is_watermark_applicable_true(sample_pdf_bytes):
+    wm = AddAfterEOF()
+    assert wm.is_watermark_applicable(sample_pdf_bytes)
+            
+       
+    
+        
+            
+        
+            
+    
 
 
 

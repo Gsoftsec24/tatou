@@ -2,15 +2,16 @@ import os
 import io
 import hashlib
 import datetime as dt
+import sys
+sys.path.append('/app/src')
+from security_logger import log_event
 from pathlib import Path
 from functools import wraps
 import logging
-import sys
 import types
 import re
 if "imghdr" not in sys.modules:
     sys.modules["imghdr"] = types.ModuleType("imghdr")
-
 from flask import Flask, jsonify, request, g, send_file, send_from_directory
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -351,11 +352,13 @@ def create_app():
 
     @app.post("/api/create-user")
     def create_user():
+        log_event(f"User registration attempt from {request.remote_addr}")
         payload = request.get_json(silent=True) or {}
         email = (payload.get("email") or "").strip().lower()
         login = (payload.get("login") or "").strip()
         password = payload.get("password") or ""
         if not email or not login or not password:
+            log_event(f"REGISTRATION FAILED - Missing fields from {request.remote_addr}")
             return jsonify({"error": "email, login, and password are required"}), 400
 
         hpw = generate_password_hash(password)
@@ -374,18 +377,22 @@ def create_app():
                     {"id": uid},
                 ).one()
         except IntegrityError:
+            log_event(f"REGISTRATION FAILED - Duplicate: {email} from {request.remote_addr}")
             return jsonify({"error": "email or login already exists"}), 409
         except Exception as e:
+            log_event(f"REGISTRATION FAILED - Database error: {str(e)} from {request.remote_addr}")
             return jsonify({"error": f"database error: {str(e)}"}), 503
 
         return jsonify({"id": row.id, "email": row.email, "login": row.login}), 201
 
     @app.post("/api/login")
     def login():
+        log_event(f"Login attempt from {request.remote_addr}")
         payload = request.get_json(silent=True) or {}
         email = (payload.get("email") or "").strip()
         password = payload.get("password") or ""
         if not email or not password:
+            log_event(f"LOGIN FAILED - Missing credentials from {request.remote_addr}")
             return jsonify({"error": "email and password are required"}), 400
 
         try:
@@ -397,11 +404,14 @@ def create_app():
                     {"email": email},
                 ).first()
         except Exception as e:
+            log_event(f"LOGIN FAILED - Database error: {str(e)} from {request.remote_addr}")
             return jsonify({"error": f"database error: {str(e)}"}), 503
 
         if not row or not check_password_hash(row.hpassword, password):
+            log_event(f"LOGIN FAILED - Invalid credentials for {email} from {request.remote_addr}")
             return jsonify({"error": "invalid credentials"}), 401
-
+            log_event(f"LOGIN SUCCESS: {email} from {request.remote_addr}")
+        
         token = _serializer().dumps(
             {"uid": int(row.id), "login": row.login, "email": row.email}
         )
@@ -420,10 +430,13 @@ def create_app():
     @app.post("/api/upload-document")
     @require_auth
     def upload_document():
+        log_event(f"File upload attempt from {request.remote_addr}")
         if "file" not in request.files:
+            log_event(f"UPLOAD FAILED - No file from {request.remote_addr}")
             return jsonify({"error": "file is required (multipart/form-data)"}), 400
         file = request.files["file"]
         if not file or file.filename == "":
+            log_event(f"UPLOAD FAILED - Empty filename from {request.remote_addr}")
             return jsonify({"error": "empty filename"}), 400
 
         fname = file.filename
@@ -436,6 +449,7 @@ def create_app():
         stored_name = f"{ts}__{fname}"
         stored_path = user_dir / stored_name
         file.save(stored_path)
+        log_event(f"File uploaded successfully: {fname} by user {g.user['login']}")
 
         sha_hex = _sha256_file(stored_path)
         size = stored_path.stat().st_size
@@ -469,6 +483,7 @@ def create_app():
                     {"id": did},
                 ).one()
         except Exception as e:
+            log_event(f"FILE UPLOAD FAILED: {fname} by {g.user['login']} - {str(e)}")
             return jsonify({"error": f"database error: {str(e)}"}), 503
 
         return (
@@ -492,6 +507,7 @@ def create_app():
     @app.get("/api/list-documents")
     @require_auth
     def list_documents():
+        log_event(f"Document list requested from {request.remote_addr}")
         try:
             with get_engine().connect() as conn:
                 rows = conn.execute(
@@ -605,6 +621,7 @@ def create_app():
     @app.get("/api/get-document/<int:document_id>")
     @require_auth
     def get_document(document_id: int | None = None):
+        log_event(f"Document access: {document_id} from {request.remote_addr}")
 
         # Support both path param and ?id=/ ?documentid=
         if document_id is None:
@@ -831,6 +848,7 @@ def create_app():
     @app.post("/api/create-watermark/<int:document_id>")
     @require_auth
     def create_watermark(document_id: int | None = None):
+        log_event(f"Watermark creation for doc {document_id} from {request.remote_addr}")
         # accept id from path, query (?id= / ?documentid=), or JSON body on GET
         if not document_id:
             document_id = (
@@ -1076,6 +1094,7 @@ def create_app():
     # GET /api/get-watermarking-methods -> {"methods":[{"name":..., "description":...}, ...], "count":N}
     @app.get("/api/get-watermarking-methods")
     def get_watermarking_methods():
+        log_event(f"Watermarking methods requested from {request.remote_addr}")
         methods = []
 
         for m in WMUtils.METHODS:
@@ -1200,9 +1219,10 @@ def create_app():
             ),
             201,
         )
+    
 
     return app
-
+    
     # -----------------------
     # Security headers (must be defined BEFORE returning app)
     # -----------------------
@@ -1223,6 +1243,7 @@ def create_app():
         response.headers.setdefault("X-Download-Options", "noopen")
         return response
 
+    
 
     return app
 

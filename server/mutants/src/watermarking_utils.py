@@ -48,7 +48,7 @@ from watermarking_method import (
 from add_after_eof import AddAfterEOF
 from email_after_eof import EmailAfterEOF
 from hash_after_eof import HashAfterEOF
-#from email_in_producer import EmailInProducer
+from email_in_producer import EmailInProducer
 # --------------------
 # Method registry
 # --------------------
@@ -56,8 +56,8 @@ from hash_after_eof import HashAfterEOF
 METHODS: Dict[str, WatermarkingMethod] = {
     AddAfterEOF.name: AddAfterEOF(),   
     EmailAfterEOF.name: EmailAfterEOF(),
-    HashAfterEOF.name: HashAfterEOF()
-#    EmailInProducer.name: EmailInProducer()
+    HashAfterEOF.name: HashAfterEOF(),
+    EmailInProducer.name: EmailInProducer()
 }
 """Registry of available watermarking methods.
 
@@ -20179,74 +20179,10 @@ def explore_pdf(*args, **kwargs):
 explore_pdf.__signature__ = _mutmut_signature(x_explore_pdf__mutmut_orig)
 x_explore_pdf__mutmut_orig.__name__ = 'x_explore_pdf'
 
-def x_store_recipient_credentials__mutmut_orig(email: str,recipient_secret: str,key: str | None = None):
+#def store_recipient_credentials(email: str,recipient_secret: str,key: str | None = None):
 
-    with open("recipient.txt", "a") as file:
-        file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
-
-def x_store_recipient_credentials__mutmut_1(email: str,recipient_secret: str,key: str | None = None):
-
-    with open(None, "a") as file:
-        file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
-
-def x_store_recipient_credentials__mutmut_2(email: str,recipient_secret: str,key: str | None = None):
-
-    with open("recipient.txt", None) as file:
-        file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
-
-def x_store_recipient_credentials__mutmut_3(email: str,recipient_secret: str,key: str | None = None):
-
-    with open("a") as file:
-        file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
-
-def x_store_recipient_credentials__mutmut_4(email: str,recipient_secret: str,key: str | None = None):
-
-    with open("recipient.txt", ) as file:
-        file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
-
-def x_store_recipient_credentials__mutmut_5(email: str,recipient_secret: str,key: str | None = None):
-
-    with open("XXrecipient.txtXX", "a") as file:
-        file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
-
-def x_store_recipient_credentials__mutmut_6(email: str,recipient_secret: str,key: str | None = None):
-
-    with open("RECIPIENT.TXT", "a") as file:
-        file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
-
-def x_store_recipient_credentials__mutmut_7(email: str,recipient_secret: str,key: str | None = None):
-
-    with open("recipient.txt", "XXaXX") as file:
-        file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
-
-def x_store_recipient_credentials__mutmut_8(email: str,recipient_secret: str,key: str | None = None):
-
-    with open("recipient.txt", "A") as file:
-        file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
-
-def x_store_recipient_credentials__mutmut_9(email: str,recipient_secret: str,key: str | None = None):
-
-    with open("recipient.txt", "a") as file:
-        file.write(None)
-
-x_store_recipient_credentials__mutmut_mutants : ClassVar[MutantDict] = {
-'x_store_recipient_credentials__mutmut_1': x_store_recipient_credentials__mutmut_1, 
-    'x_store_recipient_credentials__mutmut_2': x_store_recipient_credentials__mutmut_2, 
-    'x_store_recipient_credentials__mutmut_3': x_store_recipient_credentials__mutmut_3, 
-    'x_store_recipient_credentials__mutmut_4': x_store_recipient_credentials__mutmut_4, 
-    'x_store_recipient_credentials__mutmut_5': x_store_recipient_credentials__mutmut_5, 
-    'x_store_recipient_credentials__mutmut_6': x_store_recipient_credentials__mutmut_6, 
-    'x_store_recipient_credentials__mutmut_7': x_store_recipient_credentials__mutmut_7, 
-    'x_store_recipient_credentials__mutmut_8': x_store_recipient_credentials__mutmut_8, 
-    'x_store_recipient_credentials__mutmut_9': x_store_recipient_credentials__mutmut_9
-}
-
-def store_recipient_credentials(*args, **kwargs):
-    result = _mutmut_trampoline(x_store_recipient_credentials__mutmut_orig, x_store_recipient_credentials__mutmut_mutants, args, kwargs)
-    return result 
-
-store_recipient_credentials.__signature__ = _mutmut_signature(x_store_recipient_credentials__mutmut_orig)
-x_store_recipient_credentials__mutmut_orig.__name__ = 'x_store_recipient_credentials'
+ #   with open("recipient.txt", "a") as file:
+  #      file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
 
 __all__ = [
     "METHODS",

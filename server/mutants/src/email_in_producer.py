@@ -29,6 +29,8 @@ import smtplib
 from email.message import EmailMessage
 import re
 import pikepdf
+import os
+from pathlib import Path
 
 from watermarking_method import (
     InvalidKeyError,
@@ -1693,8 +1695,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -1746,8 +1755,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -1799,8 +1815,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -1852,8 +1875,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -1905,8 +1935,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -1958,8 +1995,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2011,8 +2055,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2064,8 +2115,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2117,8 +2175,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2170,8 +2235,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2223,8 +2295,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2276,8 +2355,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2329,8 +2415,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2382,8 +2475,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2435,8 +2535,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2488,8 +2595,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open(None, "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = None
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2541,8 +2655,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", None) as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(None).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2594,8 +2715,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get(None, "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2647,8 +2775,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", ) as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", None)).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2700,8 +2835,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("XXsecret.txtXX", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2753,8 +2895,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("SECRET.TXT", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", )).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2806,8 +2955,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "XXrXX") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("XXSECRET_DIRXX", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2859,8 +3015,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "R") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("secret_dir", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2912,8 +3075,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = None
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "XX./storageXX")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -2965,10 +3135,17 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
 
-        final_secret_bytes = None
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./STORAGE")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
@@ -3018,10 +3195,17 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
 
-        final_secret_bytes = final_secret.encode(None)
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = None
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
@@ -3071,10 +3255,17 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
 
-        final_secret_bytes = final_secret.encode("XXutf-8XX")
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir * "secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
@@ -3124,10 +3315,17 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
 
-        final_secret_bytes = final_secret.encode("UTF-8")
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"XXsecret.txtXX"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
@@ -3177,11 +3375,18 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"SECRET.TXT"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
-        expected = None
+        expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
             raise InvalidKeyError("Provided key failed to authenticate the watermark")
@@ -3230,11 +3435,18 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(None, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
-        expected = self._mac_hex(None, key)
+        expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
             raise InvalidKeyError("Provided key failed to authenticate the watermark")
@@ -3283,11 +3495,18 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, None) as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
-        expected = self._mac_hex(final_secret_bytes, None)
+        expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
             raise InvalidKeyError("Provided key failed to authenticate the watermark")
@@ -3336,11 +3555,18 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open("r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
-        expected = self._mac_hex(key)
+        expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
             raise InvalidKeyError("Provided key failed to authenticate the watermark")
@@ -3389,11 +3615,18 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, ) as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
-        expected = self._mac_hex(final_secret_bytes, )
+        expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
             raise InvalidKeyError("Provided key failed to authenticate the watermark")
@@ -3442,13 +3675,20 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "XXrXX") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
 
-        if hmac.compare_digest(mac_hex, expected):
+        if not hmac.compare_digest(mac_hex, expected):
             raise InvalidKeyError("Provided key failed to authenticate the watermark")
 
         return final_secret
@@ -3495,13 +3735,20 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "R") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
 
-        if not hmac.compare_digest(None, expected):
+        if not hmac.compare_digest(mac_hex, expected):
             raise InvalidKeyError("Provided key failed to authenticate the watermark")
 
         return final_secret
@@ -3548,13 +3795,20 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = None
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
 
-        if not hmac.compare_digest(mac_hex, None):
+        if not hmac.compare_digest(mac_hex, expected):
             raise InvalidKeyError("Provided key failed to authenticate the watermark")
 
         return final_secret
@@ -3601,13 +3855,20 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError(None) from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
 
-        if not hmac.compare_digest(expected):
+        if not hmac.compare_digest(mac_hex, expected):
             raise InvalidKeyError("Provided key failed to authenticate the watermark")
 
         return final_secret
@@ -3654,13 +3915,20 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("XXFailed to read secret.txtXX") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
 
-        if not hmac.compare_digest(mac_hex, ):
+        if not hmac.compare_digest(mac_hex, expected):
             raise InvalidKeyError("Provided key failed to authenticate the watermark")
 
         return final_secret
@@ -3707,14 +3975,21 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
-            raise InvalidKeyError(None)
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
 
         return final_secret
     
@@ -3760,14 +4035,21 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("FAILED TO READ SECRET.TXT") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
-            raise InvalidKeyError("XXProvided key failed to authenticate the watermarkXX")
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
 
         return final_secret
     
@@ -3813,14 +4095,21 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
 
-        final_secret_bytes = final_secret.encode("utf-8")
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = None
         expected = self._mac_hex(final_secret_bytes, key)
 
         if not hmac.compare_digest(mac_hex, expected):
-            raise InvalidKeyError("provided key failed to authenticate the watermark")
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
 
         return final_secret
     
@@ -3866,8 +4155,975 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode(None)
+        expected = self._mac_hex(final_secret_bytes, key)
+
+        if not hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_42(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("XXutf-8XX")
+        expected = self._mac_hex(final_secret_bytes, key)
+
+        if not hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_43(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("UTF-8")
+        expected = self._mac_hex(final_secret_bytes, key)
+
+        if not hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_44(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = None
+
+        if not hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_45(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(None, key)
+
+        if not hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_46(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(final_secret_bytes, None)
+
+        if not hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_47(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(key)
+
+        if not hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_48(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(final_secret_bytes, )
+
+        if not hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_49(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(final_secret_bytes, key)
+
+        if hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_50(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(final_secret_bytes, key)
+
+        if not hmac.compare_digest(None, expected):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_51(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(final_secret_bytes, key)
+
+        if not hmac.compare_digest(mac_hex, None):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_52(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(final_secret_bytes, key)
+
+        if not hmac.compare_digest(expected):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_53(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(final_secret_bytes, key)
+
+        if not hmac.compare_digest(mac_hex, ):
+            raise InvalidKeyError("Provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_54(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(final_secret_bytes, key)
+
+        if not hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError(None)
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_55(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(final_secret_bytes, key)
+
+        if not hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError("XXProvided key failed to authenticate the watermarkXX")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_56(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
+
+        final_secret_bytes = final_secret.encode("utf-8")
+        expected = self._mac_hex(final_secret_bytes, key)
+
+        if not hmac.compare_digest(mac_hex, expected):
+            raise InvalidKeyError("provided key failed to authenticate the watermark")
+
+        return final_secret
+    
+
+    def xǁEmailInProducerǁread_secret__mutmut_57(self, pdf, key: str) -> str:
+        """Extract the secret if present and authenticated by ``key``.
+
+        Raises :class:`SecretNotFoundError` when the marker/payload is not
+        found or is malformed. Raises :class:`InvalidKeyError` if the MAC
+        does not validate under the given key.
+        """
+        #data = load_pdf_bytes(pdf)
+        if not isinstance(key, str) or not key:
+            raise ValueError("Key must be a non-empty string")
+        with pikepdf.open(pdf) as out_pdf:
+            mac_hex = str(out_pdf.docinfo.get("/Producer"))
+        #idx = data.rfind(self._MAGIC)
+        #if idx == -1:
+         #   raise SecretNotFoundError("No AddAfterEOF watermark found")
+
+        #start = idx + len(self._MAGIC)
+        # Payload ends at the next newline or EOF
+        #end_nl = data.find(b"\n", start)
+        #end = len(data) if end_nl == -1 else end_nl
+        #b64_payload = data[start:end].strip()
+        #if not b64_payload:
+         #   raise SecretNotFoundError("Found marker but empty payload")
+
+        #try:
+         #   payload_json = base64.urlsafe_b64decode(b64_payload)
+          #  payload = json.loads(payload_json)
+        #except Exception as exc:  # broad: malformed or tampered
+         #   raise SecretNotFoundError("Malformed watermark payload") from exc
+
+        #if not (isinstance(payload, dict) and payload.get("v") == 1):
+         #   raise SecretNotFoundError("Unsupported watermark version or format")
+        #if payload.get("alg") != "HMAC-SHA256":
+         #   raise WatermarkingError("Unsupported MAC algorithm: %r" % payload.get("alg"))
+
+        #try:
+         #   mac_hex = str(payload["mac"])  # stored as hex string
+          #  secret_b64 = str(payload["secret"]).encode("ascii")
+           # secret_bytes = base64.b64decode(secret_b64)
+        #except Exception as exc:
+         #   raise SecretNotFoundError("Invalid payload fields") from exc
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -3918,7 +5174,23 @@ class EmailInProducer(WatermarkingMethod):
         'xǁEmailInProducerǁread_secret__mutmut_38': xǁEmailInProducerǁread_secret__mutmut_38, 
         'xǁEmailInProducerǁread_secret__mutmut_39': xǁEmailInProducerǁread_secret__mutmut_39, 
         'xǁEmailInProducerǁread_secret__mutmut_40': xǁEmailInProducerǁread_secret__mutmut_40, 
-        'xǁEmailInProducerǁread_secret__mutmut_41': xǁEmailInProducerǁread_secret__mutmut_41
+        'xǁEmailInProducerǁread_secret__mutmut_41': xǁEmailInProducerǁread_secret__mutmut_41, 
+        'xǁEmailInProducerǁread_secret__mutmut_42': xǁEmailInProducerǁread_secret__mutmut_42, 
+        'xǁEmailInProducerǁread_secret__mutmut_43': xǁEmailInProducerǁread_secret__mutmut_43, 
+        'xǁEmailInProducerǁread_secret__mutmut_44': xǁEmailInProducerǁread_secret__mutmut_44, 
+        'xǁEmailInProducerǁread_secret__mutmut_45': xǁEmailInProducerǁread_secret__mutmut_45, 
+        'xǁEmailInProducerǁread_secret__mutmut_46': xǁEmailInProducerǁread_secret__mutmut_46, 
+        'xǁEmailInProducerǁread_secret__mutmut_47': xǁEmailInProducerǁread_secret__mutmut_47, 
+        'xǁEmailInProducerǁread_secret__mutmut_48': xǁEmailInProducerǁread_secret__mutmut_48, 
+        'xǁEmailInProducerǁread_secret__mutmut_49': xǁEmailInProducerǁread_secret__mutmut_49, 
+        'xǁEmailInProducerǁread_secret__mutmut_50': xǁEmailInProducerǁread_secret__mutmut_50, 
+        'xǁEmailInProducerǁread_secret__mutmut_51': xǁEmailInProducerǁread_secret__mutmut_51, 
+        'xǁEmailInProducerǁread_secret__mutmut_52': xǁEmailInProducerǁread_secret__mutmut_52, 
+        'xǁEmailInProducerǁread_secret__mutmut_53': xǁEmailInProducerǁread_secret__mutmut_53, 
+        'xǁEmailInProducerǁread_secret__mutmut_54': xǁEmailInProducerǁread_secret__mutmut_54, 
+        'xǁEmailInProducerǁread_secret__mutmut_55': xǁEmailInProducerǁread_secret__mutmut_55, 
+        'xǁEmailInProducerǁread_secret__mutmut_56': xǁEmailInProducerǁread_secret__mutmut_56, 
+        'xǁEmailInProducerǁread_secret__mutmut_57': xǁEmailInProducerǁread_secret__mutmut_57
     }
     
     def read_secret(self, *args, **kwargs):
@@ -4012,7 +5284,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4041,7 +5317,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4070,7 +5350,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4099,7 +5383,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4128,7 +5416,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4157,7 +5449,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = None
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4186,7 +5482,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode(None)
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4215,7 +5515,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("XXutf-8XX")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4244,7 +5548,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("UTF-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4273,7 +5581,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = None
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4302,7 +5614,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open(None, "w") as f:
+
+        secret_dir = None
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4331,7 +5647,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", None) as f:
+
+        secret_dir = Path(None).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4360,7 +5680,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("w") as f:
+
+        secret_dir = Path(os.environ.get(None, "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4389,7 +5713,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", ) as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", None)).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4418,7 +5746,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("XXsecret.txtXX", "w") as f:
+
+        secret_dir = Path(os.environ.get("./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4447,7 +5779,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("SECRET.TXT", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", )).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4476,7 +5812,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "XXwXX") as f:
+
+        secret_dir = Path(os.environ.get("XXSECRET_DIRXX", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4505,7 +5845,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "W") as f:
+
+        secret_dir = Path(os.environ.get("secret_dir", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
@@ -4534,8 +5878,12 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
-            f.write(None)
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "XX./storageXX")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
+            f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
          #   "v": 1,
@@ -4563,9 +5911,13 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./STORAGE")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
-        mac_hex = None
+        mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
          #   "v": 1,
           #  "alg": "HMAC-SHA256",
@@ -4592,9 +5944,13 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = None
+
+        with open(filename, "w") as f:
             f.write(final_secret)
-        mac_hex = self._mac_hex(None, key)
+        mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
          #   "v": 1,
           #  "alg": "HMAC-SHA256",
@@ -4621,9 +5977,13 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir * "secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
-        mac_hex = self._mac_hex(secret_bytes, None)
+        mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
          #   "v": 1,
           #  "alg": "HMAC-SHA256",
@@ -4650,9 +6010,13 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"XXsecret.txtXX"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
-        mac_hex = self._mac_hex(key)
+        mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {
          #   "v": 1,
           #  "alg": "HMAC-SHA256",
@@ -4679,7 +6043,407 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"SECRET.TXT"
+
+        with open(filename, "w") as f:
+            f.write(final_secret)
+        mac_hex = self._mac_hex(secret_bytes, key)
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_24(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(None, "w") as f:
+            f.write(final_secret)
+        mac_hex = self._mac_hex(secret_bytes, key)
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_25(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, None) as f:
+            f.write(final_secret)
+        mac_hex = self._mac_hex(secret_bytes, key)
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_26(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open("w") as f:
+            f.write(final_secret)
+        mac_hex = self._mac_hex(secret_bytes, key)
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_27(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, ) as f:
+            f.write(final_secret)
+        mac_hex = self._mac_hex(secret_bytes, key)
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_28(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "XXwXX") as f:
+            f.write(final_secret)
+        mac_hex = self._mac_hex(secret_bytes, key)
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_29(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "W") as f:
+            f.write(final_secret)
+        mac_hex = self._mac_hex(secret_bytes, key)
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_30(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
+            f.write(None)
+        mac_hex = self._mac_hex(secret_bytes, key)
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_31(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
+            f.write(final_secret)
+        mac_hex = None
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_32(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
+            f.write(final_secret)
+        mac_hex = self._mac_hex(None, key)
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_33(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
+            f.write(final_secret)
+        mac_hex = self._mac_hex(secret_bytes, None)
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_34(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
+            f.write(final_secret)
+        mac_hex = self._mac_hex(key)
+        #obj = {
+         #   "v": 1,
+          #  "alg": "HMAC-SHA256",
+           # "mac": mac_hex,
+            #"secret": base64.b64encode(secret_bytes).decode("ascii"),
+        #}
+        # Compact JSON for determinism
+        #j = json.dumps(obj, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        #return base64.urlsafe_b64encode(j)
+        return mac_hex
+
+    # Internal helpers
+    # ---------------------
+
+    def xǁEmailInProducerǁ_build_payload__mutmut_35(self, secret: str, key: str) -> str:
+        
+        """Build the base64url-encoded JSON payload to append."""
+       # from watermarking_utils import store_recipient_credentials
+
+        secret_extract = self.extract_email_parts(secret)
+        final_secret = secret + secret_extract
+
+       # store_recipient_credentials(secret,final_secret,key)
+
+        secret_bytes = final_secret.encode("utf-8")
+        final_secret_bytes = secret_bytes
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, )
         #obj = {
@@ -4716,7 +6480,19 @@ class EmailInProducer(WatermarkingMethod):
         'xǁEmailInProducerǁ_build_payload__mutmut_20': xǁEmailInProducerǁ_build_payload__mutmut_20, 
         'xǁEmailInProducerǁ_build_payload__mutmut_21': xǁEmailInProducerǁ_build_payload__mutmut_21, 
         'xǁEmailInProducerǁ_build_payload__mutmut_22': xǁEmailInProducerǁ_build_payload__mutmut_22, 
-        'xǁEmailInProducerǁ_build_payload__mutmut_23': xǁEmailInProducerǁ_build_payload__mutmut_23
+        'xǁEmailInProducerǁ_build_payload__mutmut_23': xǁEmailInProducerǁ_build_payload__mutmut_23, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_24': xǁEmailInProducerǁ_build_payload__mutmut_24, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_25': xǁEmailInProducerǁ_build_payload__mutmut_25, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_26': xǁEmailInProducerǁ_build_payload__mutmut_26, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_27': xǁEmailInProducerǁ_build_payload__mutmut_27, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_28': xǁEmailInProducerǁ_build_payload__mutmut_28, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_29': xǁEmailInProducerǁ_build_payload__mutmut_29, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_30': xǁEmailInProducerǁ_build_payload__mutmut_30, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_31': xǁEmailInProducerǁ_build_payload__mutmut_31, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_32': xǁEmailInProducerǁ_build_payload__mutmut_32, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_33': xǁEmailInProducerǁ_build_payload__mutmut_33, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_34': xǁEmailInProducerǁ_build_payload__mutmut_34, 
+        'xǁEmailInProducerǁ_build_payload__mutmut_35': xǁEmailInProducerǁ_build_payload__mutmut_35
     }
     
     def _build_payload(self, *args, **kwargs):

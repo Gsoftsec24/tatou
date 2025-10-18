@@ -1,1 +1,0 @@
-# Nmap 7.93 scan initiated Fri Oct 17 19:58:46 2025 as: nmap -p- -sS -sV -O -T4 -oA full-tcp 10.11.12.13
