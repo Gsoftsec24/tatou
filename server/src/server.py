@@ -83,6 +83,7 @@ def create_app():
         eng = app.config.get("_ENGINE")
         if eng is None:
             TEST_MODE = os.getenv('TEST_MODE', '0') == '1'
+            # TEST_MODE=1 uses in-memory SQLite for unit tests (mock DB)
             if TEST_MODE:
                 engine_url = 'sqlite:///:memory:'
                 eng = create_engine(engine_url, future=True)
