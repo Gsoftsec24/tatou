@@ -82,9 +82,60 @@ def create_app():
     def get_engine():
         eng = app.config.get("_ENGINE")
         if eng is None:
-            eng = create_engine(db_url(), pool_pre_ping=True, future=True)
+            TEST_MODE = os.getenv('TEST_MODE', '0') == '1'
+            if TEST_MODE:
+                engine_url = 'sqlite:///:memory:'
+                eng = create_engine(engine_url, future=True)
+                logger.info("Using mock SQLite DB for TEST_MODE")
+            else:
+                eng = create_engine(db_url(), pool_pre_ping=True, future=True)
             app.config["_ENGINE"] = eng
         return eng
+        
+    def init_mock_db(engine):
+          """Populate mock DB with schema/tables for tests (Users, Documents, Versions)"""
+          with engine.connect() as conn:
+             conn.execute(text("""
+                 CREATE TABLE IF NOT EXISTS Users (
+                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     email VARCHAR(255) UNIQUE,
+                     hpassword VARCHAR(255),
+                     login VARCHAR(100) UNIQUE
+                 );
+             """))
+             conn.execute(text("""
+                 CREATE TABLE IF NOT EXISTS Documents (
+                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     name VARCHAR(255),
+                     path VARCHAR(500),
+                     ownerid INTEGER,
+                     sha256 BLOB(32),
+                     size BIGINT,
+                     creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                     FOREIGN KEY(ownerid) REFERENCES Users(id)
+                 );
+             """))
+             conn.execute(text("""
+                 CREATE TABLE IF NOT EXISTS Versions (
+                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     documentid INTEGER,
+                     link VARCHAR(64),
+                     path VARCHAR(500),
+                     intended_for VARCHAR(255),
+                     secret VARCHAR(255),
+                     method VARCHAR(50),
+                     position VARCHAR(50),
+                     FOREIGN KEY(documentid) REFERENCES Documents(id)
+                 );
+             """))
+             # Insert test user/doc for coverage
+             conn.execute(text("INSERT OR IGNORE INTO Users (id, email, login, hpassword) VALUES (1, 'test@example.com', 'testuser', 'hash');"))
+             conn.execute(text("""            INSERT OR IGNORE INTO Documents (id, name, path, ownerid, sha256, size) VALUES (1, 'test.pdf', '/fake/path.pdf', 1, X'0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef', 1024);
+             """))
+             conn.commit()
+    logger.info("Mock DB initialized with test data")
+    
+    
 
     # --- Helpers ---
     def _serializer():
