@@ -29,6 +29,8 @@ import smtplib
 from email.message import EmailMessage
 import re
 import pikepdf
+import os
+from pathlib import Path
 
 from watermarking_method import (
     InvalidKeyError,
@@ -158,8 +160,15 @@ class EmailInProducer(WatermarkingMethod):
            # secret_bytes = base64.b64decode(secret_b64)
         #except Exception as exc:
          #   raise SecretNotFoundError("Invalid payload fields") from exc
-        with open("secret.txt", "r") as f:
-            final_secret = f.read().strip()
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        try:
+            with open(filename, "r") as f:
+                final_secret = f.read().strip()
+        except Exception as exc:
+            raise SecretNotFoundError("Failed to read secret.txt") from exc
 
         final_secret_bytes = final_secret.encode("utf-8")
         expected = self._mac_hex(final_secret_bytes, key)
@@ -189,7 +198,11 @@ class EmailInProducer(WatermarkingMethod):
 
         secret_bytes = final_secret.encode("utf-8")
         final_secret_bytes = secret_bytes
-        with open("secret.txt", "w") as f:
+
+        secret_dir = Path(os.environ.get("SECRET_DIR", "./storage")).resolve()
+        filename = secret_dir/"secret.txt"
+
+        with open(filename, "w") as f:
             f.write(final_secret)
         mac_hex = self._mac_hex(secret_bytes, key)
         #obj = {

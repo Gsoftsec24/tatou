@@ -2,15 +2,16 @@ import os
 import io
 import hashlib
 import datetime as dt
+import sys
+sys.path.append('/app/src')
+from security_logger import log_event
 from pathlib import Path
 from functools import wraps
 import logging
-import sys
 import types
 import re
 if "imghdr" not in sys.modules:
     sys.modules["imghdr"] = types.ModuleType("imghdr")
-
 from flask import Flask, jsonify, request, g, send_file, send_from_directory
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -50,6 +51,13 @@ handler.setFormatter(
     logging.Formatter("[%(asctime)s] %(levelname)s %(name)s: %(message)s")
 )
 logger.addHandler(handler)
+
+# At top level in src/server.py
+def get_engine():
+    from sqlalchemy import create_engine
+    import os
+    return create_engine(os.getenv("DATABASE_URL", "sqlite:///:memory:"))
+
 
 
 def create_app():
@@ -137,29 +145,9 @@ def create_app():
     )
     rmap = RMAP(identity_manager)
 
-    # Helper to derive identity name from key file actually used
-    
-    CLIENT_KEYS_DIR = Path("./keys/clients")
-
-    def derive_identity_from_pubkey(pubkey_path: str | Path) -> str | None:
-        """
-        Extracts the group identity name (e.g. 'Group_24') from the public key filename.
-        """
-        if not pubkey_path:
-            return None
-        pub_path = Path(pubkey_path)
-        if not pub_path.exists():
-            # try searching for a match by stem in keys/clients
-            for p in CLIENT_KEYS_DIR.glob("Group_*.asc"):
-                if p.stem.lower() == str(pubkey_path).lower():
-                    return p.stem
-            return None
-        return pub_path.stem  # e.g. 'Group_24' from Group_24.asc
-
     # -----------------------
     # RMAP INITIATE endpoint
     # -----------------------
-
     CLIENT_KEYS_DIR = Path("./keys/clients")
 
     @app.route("/rmap-initiate", methods=["POST"], strict_slashes=False)
@@ -167,60 +155,15 @@ def create_app():
     def rmap_initiate():
         incoming = request.get_json(force=True) or {}
         result = rmap.handle_message1(incoming)
-
-        identity = "Unknown_Group"
-        try:
-            provided_identity = incoming.get("identity", "").strip()
-
-            # --- Step 1: try to find direct match ---
-            if provided_identity:
-                candidate = CLIENT_KEYS_DIR / f"{provided_identity}.asc"
-                if candidate.exists():
-                    identity = provided_identity
-                    logger.info(f"✅ Found public key for {identity}: {candidate.name}")
-                else:
-                    logger.warning(f"⚠️ No direct match for {provided_identity}.asc")
-    
-            # --- Step 2: try to match by pattern (Group_xx) if step 1 failed ---
-            if identity == "Unknown_Group":
-                # Extract 'Group_xx' pattern from any existing file
-                group_files = list(CLIENT_KEYS_DIR.glob("Group_*.asc"))
-                if group_files:
-                    # See if any file name contains provided_identity
-                    if provided_identity:
-                        matches = [f for f in group_files if provided_identity.lower() in f.stem.lower()]
-                        if matches:
-                            match = re.search(r"(Group_\d+)", matches[0].stem)
-                            if match:
-                                identity = match.group(1)
-                                logger.info(f"✅ Derived identity from partial match: {identity}")
-                    # If still not found, look for file with same numeric suffix as private key (if it exists)
-                    if identity == "Unknown_Group":
-                        logger.warning("⚠️ Falling back to first available public key.")
-                        first_match = re.search(r"(Group_\d+)", group_files[0].stem)
-                        identity = first_match.group(1) if first_match else "Unknown_Group"
-                else:
-                    logger.error("❌ No public key files found in keys/clients!")
-    
-            # --- Step 3: final safeguard — log available keys ---
-            if identity == "Unknown_Group":
-                all_keys = [f.name for f in CLIENT_KEYS_DIR.glob('*.asc')]
-                logger.warning(f"⚠️ Identity unresolved. Available public keys: {all_keys}")
-    
-        except Exception as e:
-            logger.exception(f"❌ Error determining identity: {e}")
-    
-        # Store for use in /rmap-get-link
-        rmap.last_identity = identity
+        # Store identity for later use
+        rmap.last_identity = incoming.get("identity", "Unknown_Group")
         app.config["LAST_RMAP_REQUEST"] = incoming
-        logger.info(f"✅ Active RMAP identity set to: {identity}")
-    
         return jsonify(result), (200 if "error" not in result else 400)
 
 
-    # -----------------------
-    # RMAP GET LINK endpoint
-    # -----------------------
+# -----------------------
+# RMAP GET LINK endpoint
+# -----------------------
     @app.route("/rmap-get-link", methods=["POST"], strict_slashes=False)
     @app.route("/api/rmap-get-link", methods=["POST"], strict_slashes=False)
     def rmap_get_link():
@@ -230,40 +173,27 @@ def create_app():
             return jsonify(result), 400
 
         session_secret = result["result"]
-
-        # Reuse normalized identity
-        identity = getattr(rmap, "last_identity", None)
-        if not identity:
-            prev_req = app.config.get("LAST_RMAP_REQUEST", {})
-            raw_identity = prev_req.get("identity", "Unknown_Group")
-            match = re.search(r"(Group_\d+)", raw_identity, re.IGNORECASE)
-            identity = match.group(1).capitalize() if match else "Unknown_Group"
-
-        logger.info(f"RMAP request received from identity: {identity}")
-
-        # -----------------------
-        # Select base PDF
-        # -----------------------
         assets_dir = Path("assets")
-        base_pdf_path = assets_dir / f"{identity}.pdf"
+        storage_dir = Path(app.config["STORAGE_DIR"])
 
+    # Derive or reuse identity
+        identity = getattr(rmap, "last_identity", "Unknown_Group")
+
+    # Determine source PDF
+        base_pdf_path = assets_dir / f"{identity}.pdf"
         if not base_pdf_path.exists():
-            logger.warning(f"No specific PDF found for {identity}, falling back to base.pdf")
             base_pdf_path = assets_dir / "base.pdf"
             if not base_pdf_path.exists():
-                assets_dir.mkdir(parents=True, exist_ok=True)
-                with open(base_pdf_path, "wb") as f:
-                    f.write(b"%PDF-1.4\n% minimal placeholder\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF")
-                logger.info("Created placeholder assets/base.pdf")
+                logger.warning(f"No specific PDF found for {identity}, creating placeholder.")
+                base_pdf_path.parent.mkdir(parents=True, exist_ok=True)
+                base_pdf_path.write_bytes(b"%PDF-1.4\n% Placeholder PDF\n")
 
-        # -----------------------
-        # Create watermarked PDF
-        # -----------------------
-        storage_dir = Path(app.config["STORAGE_DIR"])
+    # Output PDF path
         pdf_name = f"{session_secret}.pdf"
         pdf_path = storage_dir / pdf_name
 
         try:
+        # Apply watermark
             data = WMUtils.apply_watermark(
                 method="hash-eof",
                 pdf=base_pdf_path,
@@ -277,37 +207,18 @@ def create_app():
                 logger.info(f"✅ Watermarked PDF written for {identity}: {pdf_path}")
             else:
                 logger.warning("⚠️ Watermark function did not return bytes")
-        except Exception:
-            logger.exception("❌ Failed to create watermarked PDF")
+
+        except Exception as e:
+            logger.exception(f"❌ Failed to create watermarked PDF: {e}")
             return jsonify({"error": "watermarking failed"}), 500
 
-        # -----------------------
-        # Store DB record
-        # -----------------------
-        link = f"{pdf_name}"
-        try:
-            with get_engine().begin() as conn:
-                conn.execute(
-                    text("""
-                        INSERT INTO Versions (link, path, intended_for, method)
-                        VALUES (:link, :path, :intended_for, :method)
-                    """),
-                    {
-                        "link": session_secret,
-                        "path": str(pdf_path),
-                        "intended_for": identity,
-                        "method": "hash-eof",
-                    },
-                )
-        except Exception as e:
-            logger.warning(f"Could not insert version row: {e}")
 
+    # Return the response
         return jsonify({
             "result": session_secret,
-            "link": link,
+            "link": pdf_name,
             "identity": identity
         }), 200
-
 
       
     # -----------------------
@@ -348,59 +259,89 @@ def create_app():
     # -----------------------
     # Legacy API routes (all merged)
     # -----------------------
-
+    
+    
+    
+    
     @app.post("/api/create-user")
     def create_user():
+        log_event(f"User registration attempt from {request.remote_addr}")
         payload = request.get_json(silent=True) or {}
         email = (payload.get("email") or "").strip().lower()
         login = (payload.get("login") or "").strip()
         password = payload.get("password") or ""
+
         if not email or not login or not password:
+            log_event(f"REGISTRATION FAILED - Missing fields from {request.remote_addr}")
             return jsonify({"error": "email, login, and password are required"}), 400
 
         hpw = generate_password_hash(password)
 
         try:
-            with get_engine().begin() as conn:
-                res = conn.execute(
+            from sqlalchemy import text
+
+            with get_engine().connect() as conn:
+                # ✅ Insert the new user
+                result = conn.execute(
                     text(
                         "INSERT INTO Users (email, hpassword, login) VALUES (:email, :hpw, :login)"
                     ),
                     {"email": email, "hpw": hpw, "login": login},
                 )
-                uid = int(res.lastrowid)
+                conn.commit()
+
+                # ✅ Retrieve the user back from DB using the inserted email
                 row = conn.execute(
-                    text("SELECT id, email, login FROM Users WHERE id = :id"),
-                    {"id": uid},
-                ).one()
+                    text("SELECT id, email, login FROM Users WHERE email = :email"),
+                    {"email": email},
+                ).fetchone()
+
+            if not row:
+                raise Exception("Failed to retrieve newly created user")
+
         except IntegrityError:
+            log_event(f"REGISTRATION FAILED - Duplicate: {email} from {request.remote_addr}")
             return jsonify({"error": "email or login already exists"}), 409
         except Exception as e:
+            log_event(f"REGISTRATION FAILED - Database error: {str(e)} from {request.remote_addr}")
             return jsonify({"error": f"database error: {str(e)}"}), 503
 
+        log_event(f"REGISTRATION SUCCESS - {email} from {request.remote_addr}")
         return jsonify({"id": row.id, "email": row.email, "login": row.login}), 201
+
 
     @app.post("/api/login")
     def login():
+        log_event(f"Login attempt from {request.remote_addr}")
         payload = request.get_json(silent=True) or {}
         email = (payload.get("email") or "").strip()
         password = payload.get("password") or ""
+
         if not email or not password:
+            log_event(f"LOGIN FAILED - Missing credentials from {request.remote_addr}")
             return jsonify({"error": "email and password are required"}), 400
 
         try:
+            from sqlalchemy import text
+
             with get_engine().connect() as conn:
-                row = conn.execute(
+                result = conn.execute(
                     text(
                         "SELECT id, email, login, hpassword FROM Users WHERE email = :email LIMIT 1"
                     ),
                     {"email": email},
-                ).first()
+                )
+                row = result.fetchone()  # ✅ fixed: use fetchone() instead of first()
+
         except Exception as e:
+            log_event(f"LOGIN FAILED - Database error: {str(e)} from {request.remote_addr}")
             return jsonify({"error": f"database error: {str(e)}"}), 503
 
         if not row or not check_password_hash(row.hpassword, password):
+            log_event(f"LOGIN FAILED - Invalid credentials for {email} from {request.remote_addr}")
             return jsonify({"error": "invalid credentials"}), 401
+
+        log_event(f"LOGIN SUCCESS: {email} from {request.remote_addr}")
 
         token = _serializer().dumps(
             {"uid": int(row.id), "login": row.login, "email": row.email}
@@ -416,14 +357,18 @@ def create_app():
             200,
         )
 
+
     ## POST /api/upload-document  (multipart/form-data)
     @app.post("/api/upload-document")
     @require_auth
     def upload_document():
+        log_event(f"File upload attempt from {request.remote_addr}")
         if "file" not in request.files:
+            log_event(f"UPLOAD FAILED - No file from {request.remote_addr}")
             return jsonify({"error": "file is required (multipart/form-data)"}), 400
         file = request.files["file"]
         if not file or file.filename == "":
+            log_event(f"UPLOAD FAILED - Empty filename from {request.remote_addr}")
             return jsonify({"error": "empty filename"}), 400
 
         fname = file.filename
@@ -436,6 +381,7 @@ def create_app():
         stored_name = f"{ts}__{fname}"
         stored_path = user_dir / stored_name
         file.save(stored_path)
+        log_event(f"File uploaded successfully: {fname} by user {g.user['login']}")
 
         sha_hex = _sha256_file(stored_path)
         size = stored_path.stat().st_size
@@ -469,6 +415,7 @@ def create_app():
                     {"id": did},
                 ).one()
         except Exception as e:
+            log_event(f"FILE UPLOAD FAILED: {fname} by {g.user['login']} - {str(e)}")
             return jsonify({"error": f"database error: {str(e)}"}), 503
 
         return (
@@ -492,6 +439,7 @@ def create_app():
     @app.get("/api/list-documents")
     @require_auth
     def list_documents():
+        log_event(f"Document list requested from {request.remote_addr}")
         try:
             with get_engine().connect() as conn:
                 rows = conn.execute(
@@ -605,6 +553,7 @@ def create_app():
     @app.get("/api/get-document/<int:document_id>")
     @require_auth
     def get_document(document_id: int | None = None):
+        log_event(f"Document access: {document_id} from {request.remote_addr}")
 
         # Support both path param and ?id=/ ?documentid=
         if document_id is None:
@@ -668,7 +617,7 @@ def create_app():
     # GET /api/get-version/<link>  → returns the watermarked PDF (inline)
     @app.get("/api/get-version/<link>")
     def get_version(link: str):
-        storage_dir = app.config["STORAGE_DIR"]
+        storage_dir = Path(app.config["STORAGE_DIR"])
         pdf_path = storage_dir / f"{link}.pdf"
         
         # ✅ 1. Serve directly if the file exists in storage
@@ -679,7 +628,12 @@ def create_app():
                 as_attachment=False,
                 download_name=f"{link}.pdf"
             )
-        
+        if not pdf_path.exists():
+            logger.error(f"❌ Requested PDF not found: {pdf_path}")
+            return jsonify({"error": "File not found"}), 404
+
+        logger.info(f"📄 Serving PDF for link: {link}")
+        return send_file(pdf_path, mimetype="application/pdf")
 
         try:
             with get_engine().connect() as conn:
@@ -831,6 +785,7 @@ def create_app():
     @app.post("/api/create-watermark/<int:document_id>")
     @require_auth
     def create_watermark(document_id: int | None = None):
+        log_event(f"Watermark creation for doc {document_id} from {request.remote_addr}")
         # accept id from path, query (?id= / ?documentid=), or JSON body on GET
         if not document_id:
             document_id = (
@@ -1076,6 +1031,7 @@ def create_app():
     # GET /api/get-watermarking-methods -> {"methods":[{"name":..., "description":...}, ...], "count":N}
     @app.get("/api/get-watermarking-methods")
     def get_watermarking_methods():
+        log_event(f"Watermarking methods requested from {request.remote_addr}")
         methods = []
 
         for m in WMUtils.METHODS:
@@ -1200,9 +1156,10 @@ def create_app():
             ),
             201,
         )
+    
 
     return app
-
+    
     # -----------------------
     # Security headers (must be defined BEFORE returning app)
     # -----------------------
@@ -1223,6 +1180,7 @@ def create_app():
         response.headers.setdefault("X-Download-Options", "noopen")
         return response
 
+    
 
     return app
 

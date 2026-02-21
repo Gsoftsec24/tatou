@@ -48,7 +48,7 @@ from watermarking_method import (
 from add_after_eof import AddAfterEOF
 from email_after_eof import EmailAfterEOF
 from hash_after_eof import HashAfterEOF
-#from email_in_producer import EmailInProducer
+from email_in_producer import EmailInProducer
 # --------------------
 # Method registry
 # --------------------
@@ -56,8 +56,8 @@ from hash_after_eof import HashAfterEOF
 METHODS: Dict[str, WatermarkingMethod] = {
     AddAfterEOF.name: AddAfterEOF(),   
     EmailAfterEOF.name: EmailAfterEOF(),
-    HashAfterEOF.name: HashAfterEOF()
-#    EmailInProducer.name: EmailInProducer()
+    HashAfterEOF.name: HashAfterEOF(),
+    EmailInProducer.name: EmailInProducer()
 }
 """Registry of available watermarking methods.
 
@@ -246,10 +246,10 @@ def explore_pdf(pdf: PdfSource) -> Dict[str, Any]:
     root["children"] = children
     return root
 
-def store_recipient_credentials(email: str,recipient_secret: str,key: str | None = None):
+#def store_recipient_credentials(email: str,recipient_secret: str,key: str | None = None):
 
-    with open("recipient.txt", "a") as file:
-        file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
+ #   with open("recipient.txt", "a") as file:
+  #      file.write(f"Email: {email},Secret: {recipient_secret},Key: {key}\n")
 
 __all__ = [
     "METHODS",

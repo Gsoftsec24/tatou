@@ -27,11 +27,14 @@ COPY src /app/src
 COPY flag /app/flag
 COPY keys /app/keys
 COPY src/static ./static
+COPY downloads /app/downloads
 
 #copy base.pdf file
 RUN mkdir -p /app/assets
 RUN mkdir -p /app/static
+RUN mkdir -p /app/logs
 COPY src/assets/base.pdf /app/assets/base.pdf
+COPY src/logs/security.log /app/logs/security.log
 COPY src/assets/Group_03.pdf /app/assets/Group_03.pdf
 COPY src/assets/Group_04.pdf /app/assets/Group_04.pdf
 COPY src/assets/Group_05.pdf /app/assets/Group_05.pdf
@@ -54,6 +57,7 @@ COPY src/assets/Group_22.pdf /app/assets/Group_22.pdf
 COPY src/assets/Group_23.pdf /app/assets/Group_23.pdf
 COPY src/assets/Group_24.pdf /app/assets/Group_24.pdf
 COPY src/assets/Group_26.pdf /app/assets/Group_26.pdf
+COPY src/assets/Nicolas.pdf /app/assets/Nicolas.pdf
 
 # Install again in case local src defines entry points
 RUN pip install --no-cache-dir -e .
